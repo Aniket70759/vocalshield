@@ -1,0 +1,6 @@
+{
+  "name": "VocalShield AI - Voice Integrity & Threat Defense",
+  "description": "Enterprise-grade real-time voice integrity verification, deepfake audio detection, and defense policy management platform.",
+  "requestFramePermissions": ["microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

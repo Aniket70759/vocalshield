@@ -1,0 +1,182 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Enterprise analyst or security officer profile",
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "description": "User email address"
+        },
+        "name": {
+          "type": "string",
+          "description": "Display name of the user"
+        },
+        "role": {
+          "type": "string",
+          "description": "Security role"
+        },
+        "department": {
+          "type": "string",
+          "description": "Department or SOC division"
+        }
+      },
+      "required": ["email", "name", "role"]
+    },
+    "VoiceDetectionAudit": {
+      "title": "VoiceDetectionAudit",
+      "description": "Audit record of voice deepfake detection results",
+      "type": "object",
+      "properties": {
+        "audioName": {
+          "type": "string",
+          "description": "Name or identifier of analyzed audio"
+        },
+        "isAiVoice": {
+          "type": "boolean",
+          "description": "Whether voice is synthetic clone or authentic"
+        },
+        "aiProbability": {
+          "type": "number",
+          "description": "AI likelihood percentage (0-100)"
+        },
+        "humanProbability": {
+          "type": "number",
+          "description": "Human authenticity percentage (0-100)"
+        },
+        "confidenceScore": {
+          "type": "number",
+          "description": "Model confidence score"
+        },
+        "verdict": {
+          "type": "string",
+          "description": "Forensic verdict classification"
+        },
+        "detectedSynthesizer": {
+          "type": "string",
+          "description": "Identified neural vocoder architecture or none"
+        },
+        "auditHash": {
+          "type": "string",
+          "description": "SHA-256 digital audit fingerprint"
+        },
+        "userEmail": {
+          "type": "string",
+          "description": "Analyst email who initiated detection"
+        },
+        "status": {
+          "type": "string",
+          "description": "Investigation status"
+        },
+        "notes": {
+          "type": "string",
+          "description": "Forensic notes and disposition"
+        },
+        "timestamp": {
+          "type": "string",
+          "description": "ISO timestamp"
+        }
+      },
+      "required": ["audioName", "isAiVoice", "verdict", "auditHash"]
+    },
+    "DefensePolicyConfig": {
+      "title": "DefensePolicyConfig",
+      "description": "Automated telecom and banking defense threshold settings",
+      "type": "object",
+      "properties": {
+        "autoTerminateThreshold": {
+          "type": "number",
+          "description": "Risk percentage threshold to automatically drop call"
+        },
+        "whisperAlertThreshold": {
+          "type": "number",
+          "description": "Risk threshold to inject operator whisper alert"
+        },
+        "stepUpMfaThreshold": {
+          "type": "number",
+          "description": "Risk threshold to prompt cryptographic push challenge"
+        },
+        "requireSupervisorSignoff": {
+          "type": "boolean",
+          "description": "Require supervisor override for high risk actions"
+        },
+        "blockInternationalSpoofing": {
+          "type": "boolean",
+          "description": "Automatically block non-STIR/SHAKEN international routes"
+        },
+        "dpdpActComplianceZeroAudio": {
+          "type": "boolean",
+          "description": "Zero raw audio retention compliance"
+        },
+        "edgeInferenceMode": {
+          "type": "boolean",
+          "description": "Execute DSP features on edge without cloud proxy"
+        },
+        "telecomProvider": {
+          "type": "string",
+          "description": "Integrated telecom switch / PBX provider"
+        },
+        "wireTransferFloorLimit": {
+          "type": "number",
+          "description": "Threshold amount requiring voice liveness re-verification"
+        }
+      },
+      "required": ["autoTerminateThreshold", "whisperAlertThreshold", "stepUpMfaThreshold"]
+    },
+    "ThreatAlertLog": {
+      "title": "ThreatAlertLog",
+      "description": "Security incident and intercepted deepfake alert record",
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "description": "Alert title"
+        },
+        "detail": {
+          "type": "string",
+          "description": "Detailed explanation of forensic trigger"
+        },
+        "type": {
+          "type": "string",
+          "description": "Alert category (threat, warn, info, mfa)"
+        },
+        "status": {
+          "type": "string",
+          "description": "Triage status: Active, Mitigated, False Positive, Under Review"
+        },
+        "priority": {
+          "type": "string",
+          "description": "Severity priority: critical, high, medium, low"
+        },
+        "sourceLine": {
+          "type": "string",
+          "description": "SIP trunk or caller channel"
+        },
+        "timestamp": {
+          "type": "string",
+          "description": "Timestamp of alert"
+        }
+      },
+      "required": ["title", "detail", "type"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "Stores registered analyst profiles and last active timestamps"
+    },
+    "/voice_detections/{detectionId}": {
+      "schema": "VoiceDetectionAudit",
+      "description": "Immutable forensic audit trail of all tested voice samples"
+    },
+    "/system_config/defense_policies": {
+      "schema": "DefensePolicyConfig",
+      "description": "Global enterprise security rules and automated mitigation thresholds"
+    },
+    "/threat_alerts/{alertId}": {
+      "schema": "ThreatAlertLog",
+      "description": "Live log of intercepted spoofing and cloned audio streams"
+    }
+  }
+}

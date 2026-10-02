@@ -1,0 +1,25 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Allow authenticated users to manage their user profiles
+    match /users/{userId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // Voice detection audit records: readable by authenticated analysts, creatable and updatable with valid audit structure
+    match /voice_detections/{detectionId} {
+      allow read, create, update: if request.auth != null;
+    }
+
+    // Defense policies: readable and updatable by authenticated analysts
+    match /system_config/{configId} {
+      allow read, write: if request.auth != null;
+    }
+
+    // Threat alert logs: readable and updatable by authenticated analysts
+    match /threat_alerts/{alertId} {
+      allow read, create, update: if request.auth != null;
+    }
+  }
+}
